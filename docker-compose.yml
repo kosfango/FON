@@ -1,0 +1,54 @@
+version: '2'
+services:
+  node:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - "/opt/fido/data:/usr/local/fido"
+      - /opt/fido/etc/binkd.conf:/usr/local/etc/binkd.conf
+      - /opt/fido/web:/var/www/vhosts/wfido
+    volumes_from:
+      - 'maria-db'
+      - 'php-custom'
+    links:
+      - maria-db
+    ports:
+      - "24554:24554"
+    container_name: fido_node
+
+  maria-db:
+    build:
+       context: ./maria
+       dockerfile: Dockerfile
+    restart: always
+    environment:
+       MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3307:3306" # map port to none standard port, to avoid conflicts with locally installed mongodb. 
+    volumes:
+      - /opt/fido/mysql:/var/lib/mysql
+
+  nginx-custom:
+    build:
+       context: ./nginx
+       dockerfile: Dockerfile
+    ports:
+       - "8080:80"
+    volumes:
+       - /opt/fido/web:/var/www/vhosts/wfido
+       - /opt/fido/etc/nginx:/etc/nginx/conf.d
+    volumes_from:
+       - 'php-custom'
+    links:
+       - php-custom
+
+  php-custom:
+    build:
+        context: ./php
+        dockerfile: ./Dockerfile
+    volumes:
+       - /opt/fido/etc/php/wfido.conf:/usr/local/etc/php-fpm.d/wfido.conf
+       - /opt/fido/web:/var/www/vhosts/wfido
+    volumes_from:
+           - 'maria-db'

@@ -1,0 +1,41 @@
+# Link definitions
+
+link LoopBack
+aka 2:5034/17
+allowemptypktpwd on
+
+link BOSS
+aka 2:5034/10
+ouraka 2:5034/17.0@fidonet
+password yourpassword
+areafixpwd yourpassword
+Level 20
+areafixautocreate on
+areafixautocreatedefaults -b Squish -g A -dupeCheck move -dupeHistory 11
+areafixautocreatefile /usr/local/fido/etc/areas
+forwardrequests on
+areafixFwdPriority 1
+areafixname AreaFix
+netMailFlavour Direct
+EchomailFlavour Direct
+FileEchoFlavour Direct
+filefixautocreate on
+filefixautocreatefile /usr/local/fido/etc/fileareas
+filefixautocreatedefaults -g A -p 14
+AutoFileCreateSubdirs on
+filefixname FileFix
+filefixFwdPriority 1
+#ForwardFileRequests on
+
+link Sergey Anokhin
+Aka 2:5034/17.1
+Password pointpassword
+Level 20
+AccessGrp A,B,C
+autocreate off
+Export On
+netMailFlavour Hold
+EchomailFlavour Hold
+FileEchoFlavour hold
+AutoPause 22
+

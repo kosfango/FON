@@ -1,0 +1,6 @@
+post-configure.sh
+prepare.sh
+stop_and_remove_containers.sh
+start_compose.sh
+test.sh
+test2.sh
