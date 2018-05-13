@@ -48,18 +48,30 @@ mkdir -p /opt/fido/data/inbound
 mkdir -p /opt/fido/data/insecure
 mkdir -p /opt/fido/data/outbound
 mkdir -p /opt/fido/data/msg/dupe
-mkdir -p /opt/fido/data/log/nginx
 mkdir -p /opt/fido/data/fileareas
 
 cp -R ./samples/binkd/* /opt/fido/etc/
 cp -R ./samples/nginx/* /opt/fido/etc/nginx
 cp -R ./samples/php-fpm/* /opt/fido/etc/php
 cp -R ./samples/husky/* /opt/fido/data/etc
+cp ./samples/toss.sh	/opt/fido/data/lib/toss.sh
+git clone https://github.com/kosfango/wfido.git
+cp  ./wfido/hpt/filter.pl  /opt/fido/data/lib/filter.pl
+sed -i 's/\/home\/fidonet\/var\/fidonet\/xml\/$random_string.xml/\/usr\/local\/fido\/var\/xml\/$random_string.xml/g' /opt/fido/data/lib/filter.pl
+cp -R ./wfido/htdocs/* /opt/fido/web/
+cp -R ./wfido/scripts/* /opt/fido/data/lib/
+        
 
 docker-compose -f ./docker-compose.yml up --build -d
 
-docker exec -ti fido_node "mysql -u root -ppassword --socket=/var/run/mysqld/mysqld.sock -e "set global sql_mode='NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';""
-docker exec -ti fido_node "mysql -u root -ppassword --socket=/var/run/mysqld/mysqld.sock < /root/devel/wfido/dump_install.sql"
+while [ "$(docker exec fido_node ls /var/run/mysqld/mysqld.sock)" != /var/run/mysqld/mysqld.sock ];
+do
+    sleep 5
+    echo "Waiting MySQL socket..."
+done
+
+docker exec -ti fido_node mysql -u root -ppassword --socket=/var/run/mysqld/mysqld.sock -e "set global sql_mode='NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';"
+docker exec -ti fido_node sh -c 'mysql -u root -ppassword --socket=/var/run/mysqld/mysqld.sock < /root/devel/wfido/dump_install.sql'
 
 #Entering variables
 read -p 'Please enter your First Name: ' namevar
