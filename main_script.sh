@@ -57,7 +57,6 @@ cp -R ./samples/php-fpm/* /opt/fido/etc/php
 cp -R ./samples/husky/* /opt/fido/data/etc
 
 docker-compose -f ./docker-compose.yml up --build -d
-docker exec -ti fido_node /root/devel/deploy.sh
 
 docker exec -ti fido_node "mysql -u root -ppassword --socket=/var/run/mysqld/mysqld.sock -e "set global sql_mode='NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';""
 docker exec -ti fido_node "mysql -u root -ppassword --socket=/var/run/mysqld/mysqld.sock < /root/devel/wfido/dump_install.sql"
