@@ -1,11 +1,8 @@
 TODO:
 
-check docker and docker-compose
-check directory /opt/fido exist
-change MyISAM to InnoDB/Aria
+php not found in node container, we need to run it by cron?
+change MyISAM to InnoDB/Aria (search feature?)
 optional port for WWW and MySQL
 log rotation
-logs from php-fpm outside container
-logs from nginx outside container
 
 php mail() ???

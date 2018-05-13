@@ -39,6 +39,8 @@ robotorigin AreaFix robot
 robot FileFix
 fromname FileFix robot
 robotorigin FileFix robot
+FileAreaBaseDir         /usr/local/fido/fileareas
+PassFileAreaDir         /usr/local/fido/fileareas
 
 linkdefaults begin
 allowemptypktpwd secure

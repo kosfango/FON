@@ -4,7 +4,7 @@ link LoopBack
 aka 2:5034/17
 allowemptypktpwd on
 
-link BOSS
+link FirstName SecondName
 aka 2:5034/10
 ouraka 2:5034/17.0@fidonet
 password yourpassword

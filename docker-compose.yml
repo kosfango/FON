@@ -38,6 +38,7 @@ services:
     volumes:
        - /opt/fido/web:/var/www/vhosts/wfido
        - /opt/fido/etc/nginx:/etc/nginx/conf.d
+       - /opt/fido/var/log/nginx:/var/log/nginx
     volumes_from:
        - 'php-custom'
     links:
@@ -50,5 +51,6 @@ services:
     volumes:
        - /opt/fido/etc/php/wfido.conf:/usr/local/etc/php-fpm.d/wfido.conf
        - /opt/fido/web:/var/www/vhosts/wfido
+       - /opt/fido/var/log/wfido.PHP_errors.log:/var/log/php-fpm/wfido.PHP_errors.log
     volumes_from:
            - 'maria-db'

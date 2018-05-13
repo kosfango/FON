@@ -1,15 +1,17 @@
 #!/bin/sh
 
-perl /opt/fido/data/lib/sql2pkt.pl
+perl /usr/local/fido/lib/sql2pkt.pl
 hpt toss afix
+hpt pack
 htick toss
-htick announce
+#htick announce
 htick ffix
 htick scan
+hpt scan
 
 touch /tmp/flag_link
-/opt/fido/data/lib/xml2sql.pl > /dev/null
-/opt/fido/web/bin/fastlink.php > /dev/null
+/usr/local/fido/lib/xml2sql.pl > /dev/null
+/var/www/vhosts/wfido/bin/fastlink.php > /dev/null
 rm /tmp/flag_link
 
 

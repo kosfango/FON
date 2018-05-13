@@ -9,6 +9,8 @@ RUN cd /tmp && rpm -Uvh http://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e
     && yum groupinstall "Development Tools" -y \
     && yum install perl-ExtUtils-Embed.noarch -y
 
+ADD ./wfido/deploy.sh /root/devel/deploy.sh
+
 RUN mkdir -p /root/devel/husky \
     && cd /root/devel/husky \
     && git clone https://github.com/huskyproject/smapi.git \
@@ -30,11 +32,42 @@ RUN mkdir -p /root/devel/husky \
     && cd /root/devel && git clone https://github.com/pgul/binkd.git \
     && cd ./binkd && cp mkfls/unix/* . && sh ./configure && make && make install \
     && mkdir -p /usr/local/fido/etc && mkdir /usr/local/etc/fido \
-    && ln -s /usr/local/fido/etc/config /usr/local/etc/fido/config
+    && ln -s /usr/local/fido/etc/config /usr/local/etc/fido/config \
+    #####################################################################################
+    && cd /root/devel \
+    && git clone https://github.com/kosfango/wfido.git \
+###dirty
+    && mkdir -p /usr/local/fido/lib/ \
+###
+    && cp  /root/devel/wfido/hpt/filter.pl  /usr/local/fido/lib/filter.pl \
+    && sed -i 's/\/home\/fidonet\/var\/fidonet\/xml\/$random_string.xml/\/usr\/local\/fido\/var\/xml\/$random_string.xml/g' /usr/local/fido/lib/filter.pl \
+    && echo '# MariaDB 10.2 CentOS repository list - created 2018-04-04 10:49 UTC\n\
+	# http://downloads.mariadb.org/mariadb/repositories/\n\
+	[mariadb]\n\
+	name = MariaDB\n\
+	baseurl = http://yum.mariadb.org/10.2/centos7-amd64\n\
+	gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB\n\
+	gpgcheck=1\n'\
+	>> /etc/yum.repos.d/mariadb.repo \
+    && yum update -y && yum install MariaDB-client perl-Digest-MD5 perl-DBD-MySQL perl-Test-Simple.noarch -y \
+    && cd /root/devel/wfido/dependencies \
+    && tar -xvzf /root/devel/wfido/dependencies/FTN-Pkt-1.02.tar.gz \
+    && cd /root/devel/wfido/dependencies/FTN-Pkt-1.02 \
+    && perl Makefile.PL && make && make test && make install \
+    && sed -i 's/require Exporter;/use Exporter;/g' /usr/local/share/perl5/FTN/Pkt.pm \
+    && mkdir -p /usr/local/fido/var/xml/archive \
+    && mkdir -p /var/www/vhosts/wfido && useradd nginx \
+    && cp -R /root/devel/wfido/htdocs/* /var/www/vhosts/wfido/ \
+    && cp -R /root/devel/wfido/scripts/* /usr/local/fido/lib/ \
+###dirty
+    && mkdir -p /usr/local/fido/log/ \
+    && mkdir -p /usr/local/fido/outbound \
+    && mkdir -p /usr/local/fido/inbound \
+    && mkdir -p /usr/local/fido/insecure \
+    && mkdir -p /usr/local/fido/tmp/in 
+###
 
 COPY ./samples/binkd/binkd.conf /usr/local/etc/binkd.conf
-ADD ./wfido/deploy.sh /root/devel/deploy.sh
-    
 CMD ["/usr/local/sbin/binkd", "/usr/local/etc/binkd.conf", "-C" ]
 
 EXPOSE 24554
