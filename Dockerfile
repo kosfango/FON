@@ -31,12 +31,14 @@ RUN mkdir -p /root/devel/husky \
     && cd ./binkd && cp mkfls/unix/* . && sh ./configure && make && make install \
     && mkdir -p /usr/local/fido/etc && mkdir /usr/local/etc/fido \
     && ln -s /usr/local/fido/etc/config /usr/local/etc/fido/config \
-    #####################################################################################
+
+# Start WFIDO deployment
+########################################################################################
     && cd /root/devel \
     && git clone https://github.com/kosfango/wfido.git \
-###dirty
+    ###dirty
     && mkdir -p /usr/local/fido/lib/ \
-###
+    ###
     && cp  /root/devel/wfido/hpt/filter.pl  /usr/local/fido/lib/filter.pl \
     && sed -i 's/\/home\/fidonet\/var\/fidonet\/xml\/$random_string.xml/\/usr\/local\/fido\/var\/xml\/$random_string.xml/g' /usr/local/fido/lib/filter.pl \
     && echo '# MariaDB 10.2 CentOS repository list - created 2018-04-04 10:49 UTC\n\
@@ -57,13 +59,15 @@ RUN mkdir -p /root/devel/husky \
     && mkdir -p /var/www/vhosts/wfido && useradd nginx \
     && cp -R /root/devel/wfido/htdocs/* /var/www/vhosts/wfido/ \
     && cp -R /root/devel/wfido/scripts/* /usr/local/fido/lib/ \
-###dirty
+    ###dirty
     && mkdir -p /usr/local/fido/log/ \
     && mkdir -p /usr/local/fido/outbound \
     && mkdir -p /usr/local/fido/inbound \
     && mkdir -p /usr/local/fido/insecure \
     && mkdir -p /usr/local/fido/tmp/in 
-###
+    ###
+# End WFIDO deployment
+#########################################################################################
 
 COPY ./samples/binkd/binkd.conf /usr/local/etc/binkd.conf
 CMD ["/usr/local/sbin/binkd", "/usr/local/etc/binkd.conf", "-C" ]
