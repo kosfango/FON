@@ -1,8 +1,9 @@
 TODO:
 
-php not found in node container, we need to run it by cron?
-change MyISAM to InnoDB/Aria (search feature?)
+php not found in node container, we need to run it by cron(?)
+change MyISAM to InnoDB/Aria (check search feature)
 optional port for WWW and MySQL
 log rotation
+optional web interface install(?)
 
-php mail() ???
+php mail() (???)

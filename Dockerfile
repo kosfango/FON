@@ -9,8 +9,6 @@ RUN cd /tmp && rpm -Uvh http://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e
     && yum groupinstall "Development Tools" -y \
     && yum install perl-ExtUtils-Embed.noarch -y
 
-ADD ./wfido/deploy.sh /root/devel/deploy.sh
-
 RUN mkdir -p /root/devel/husky \
     && cd /root/devel/husky \
     && git clone https://github.com/huskyproject/smapi.git \
