@@ -1,5 +1,7 @@
 TODO:
 
+echo info about wfido default password and some etc..
+sync date with host machine?
 php not found in node container, we need to run it by cron(?)
 change MyISAM to InnoDB/Aria (check search feature)
 optional port for WWW and MySQL

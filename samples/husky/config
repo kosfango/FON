@@ -1,6 +1,6 @@
 # main fidoconfig file
 name TEST Station
-sysop Sergey Anohin
+sysop MyFirstName MySecondName
 location Kostroma, Russia
 address 2:5034/17
 inbound /usr/local/fido/insecure
@@ -23,7 +23,7 @@ hptperlfile /usr/local/fido/lib/filter.pl
 pack zip zip -9 -j -q $a $f
 unpack "unzip -j -Loqq $a $f -d $p" 0 504b0304
 
-carbonto Sergey Anohin
+carbonto MyFirstName MySecondName
 carboncopy PERSONAL.MAIL
 
 robotsarea NETMAIL

@@ -51,6 +51,6 @@ services:
     volumes:
        - /opt/fido/etc/php/wfido.conf:/usr/local/etc/php-fpm.d/wfido.conf
        - /opt/fido/web:/var/www/vhosts/wfido
-       - /opt/fido/var/log/wfido.PHP_errors.log:/var/log/php-fpm/wfido.PHP_errors.log
+       - /opt/fido/var/log/php-fpm:/var/log/php-fpm
     volumes_from:
            - 'maria-db'

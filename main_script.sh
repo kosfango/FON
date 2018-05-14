@@ -39,6 +39,7 @@ mkdir -p /opt/fido/data/tmp/in
 mkdir -p /opt/fido/data/tmp/out
 mkdir -p /opt/fido/data/lib
 mkdir -p /opt/fido/data/etc
+mkdir -p /opt/fido/data/log
 mkdir -p /opt/fido/mysql
 mkdir -p /opt/fido/web
 mkdir -p /opt/fido/var/run
@@ -66,8 +67,8 @@ docker-compose -f ./docker-compose.yml up --build -d
 
 while [ "$(docker exec fido_node ls /var/run/mysqld/mysqld.sock)" != /var/run/mysqld/mysqld.sock ];
 do
-    sleep 5
     echo "Waiting MySQL socket..."
+    sleep 5
 done
 
 docker exec -ti fido_node mysql -u root -ppassword --socket=/var/run/mysqld/mysqld.sock -e "set global sql_mode='NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';"
@@ -92,32 +93,30 @@ read -sp 'Please enter password for your uplink: ' uppassvar
 echo " "
 
 #Editing fido config
-sed -i "s/Sergey Anohin/$namevar $surnamevar/g" /opt/fido/data/etc/config
+sed -i "s/MyFirstName MySecondName/$namevar $surnamevar/g" /opt/fido/data/etc/config
 sed -i "s#2:5034\/17#$nodeaddrrvar#" /opt/fido/data/etc/config
 sed -i "s/TEST Station/$stnamevar/g" /opt/fido/data/etc/config
 sed -i "s/Kostroma, Russia/$locvar/g" /opt/fido/data/etc/config
 
 #Editing links config
-sed -i "s#2:5034\/17#$nodeaddrrvar#" /opt/fido/data/etc/links
-sed -i "s#2:5034\/17.1#${nodeaddrrvar}.1#" /opt/fido/data/etc/links
-sed -i "s/FirstName SecondName/$upnamevar $upsurnamervar/g" /opt/fido/data/etc/links
-sed -i "s#2:5034\/17.0@fidonet#${nodeaddrrvar}.0@fidonet#" /opt/fido/data/etc/links
-sed -i "s#2:5034\/10#$upnodeaddrrvar#" /opt/fido/data/etc/links
+sed -i "s#2:5034/17#$nodeaddrrvar#g" /opt/fido/data/etc/links
+sed -i "s/UplinkFirstName UplinkSecondName/$upnamevar $upsurnamervar/g" /opt/fido/data/etc/links
+sed -i "s#2:9999/99#$upnodeaddrrvar#g" /opt/fido/data/etc/links
 sed -i "s/yourpassword/$uppassvar/g" /opt/fido/data/etc/links
 sed -i "s/pointpassword/$passvar/g" /opt/fido/data/etc/links
-sed -i "s#link Sergey Anokhin#link $namevar $surnamevar#" /opt/fido/data/etc/links
+sed -i "s#link MyFirstName MySecondName#link $namevar $surnamevar#g" /opt/fido/data/etc/links
 
 #Editing route config
-sed -i "s#2:5034\/10#$upnodeaddrrvar#" /opt/fido/data/etc/route
-sed -i "s#2:5034\/17.\*#${nodeaddrrvar}.\*#" /opt/fido/data/etc/route
+sed -i "s#2:9999/99#$upnodeaddrrvar#" /opt/fido/data/etc/route
+sed -i "s#2:5034/17.\*#${nodeaddrrvar}.\*#" /opt/fido/data/etc/route
 
 #Editing binkdconfig
 sed -i "s#2:5034\/17@fidonet#${nodeaddrrvar}@fidonet#" /opt/fido/etc/binkd.conf
 sed -i "s/TEST Station/$stnamevar/g" /opt/fido/etc/binkd.conf
 sed -i "s/Kostroma, Russia/$locvar/g" /opt/fido/etc/binkd.conf
-sed -i "s#Sergey Anohin#${namevar} ${surnamevar}#" /opt/fido/etc/binkd.conf
-sed -i "s#2:5034\/10@fidonet#${upnodeaddrrvar}@fidonet#" /opt/fido/etc/binkd.conf
-sed -i "s/5034.ru/$upnodehostvar/g" /opt/fido/etc/binkd.conf
+sed -i "s#MyFirstName MySecondName#${namevar} ${surnamevar}#" /opt/fido/etc/binkd.conf
+sed -i "s#2:9999/99@fidonet#${upnodeaddrrvar}@fidonet#" /opt/fido/etc/binkd.conf
+sed -i "s/domain.com/$upnodehostvar/g" /opt/fido/etc/binkd.conf
 sed -i "s/bosspassword/$uppassvar/g" /opt/fido/etc/binkd.conf
 sed -i "s#2:5034\/17.1@fidonet#${nodeaddrrvar}.1@fidonet#" /opt/fido/etc/binkd.conf
 sed -i "s/yourpassword/$passvar/g" /opt/fido/etc/binkd.conf

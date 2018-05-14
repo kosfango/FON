@@ -4,8 +4,8 @@ link LoopBack
 aka 2:5034/17
 allowemptypktpwd on
 
-link FirstName SecondName
-aka 2:5034/10
+link UplinkFirstName UplinkSecondName
+aka 2:9999/99
 ouraka 2:5034/17.0@fidonet
 password yourpassword
 areafixpwd yourpassword
@@ -27,7 +27,7 @@ filefixname FileFix
 filefixFwdPriority 1
 #ForwardFileRequests on
 
-link Sergey Anokhin
+link MyFirstName MySecondName
 Aka 2:5034/17.1
 Password pointpassword
 Level 20
