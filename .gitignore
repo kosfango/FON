@@ -4,4 +4,4 @@ stop_and_remove_containers.sh
 start_compose.sh
 test.sh
 test2.sh
-./wfido
+wfido/
