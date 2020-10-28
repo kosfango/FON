@@ -2,9 +2,9 @@ FROM centos:latest
 
 MAINTAINER Sergey Anokhin 2:5034/10.1
 
-RUN cd /tmp && rpm -Uvh http://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm \
-    && rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm \
-    && rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm \
+RUN cd /tmp && rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
+    && rpm -Uvh https://rpms.famillecollet.com/enterprise/remi-release-7.rpm \
+    && rpm -Uvh https://www.elrepo.org/elrepo-release-7.el7.elrepo.noarch.rpm \
     && yum upgrade -y \
     && yum groupinstall "Development Tools" -y \
     && yum install perl-ExtUtils-Embed.noarch -y
@@ -35,7 +35,7 @@ RUN mkdir -p /root/devel/husky \
 # Start WFIDO deployment
 ########################################################################################
     && cd /root/devel \
-    && git clone https://github.com/kosfango/wfido.git \
+    && git clone -b master-php7 https://github.com/kosfango/wfido.git \
     ###dirty
     && mkdir -p /usr/local/fido/lib/ \
     ###

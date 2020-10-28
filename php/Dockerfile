@@ -1,4 +1,4 @@
-FROM php:5.6-fpm
+FROM php:7.4-fpm
 RUN mkdir /var/run/wfido && chown www-data:www-data /var/run/wfido && mkdir /var/log/php-fpm && chown www-data:www-data /var/log/php-fpm
 RUN docker-php-ext-install mysql mysqli pdo pdo_mysql
 VOLUME ["/var/run/wfido"]
