@@ -11,7 +11,6 @@ hpt scan
 
 touch /tmp/flag_link
 /usr/local/fido/lib/xml2sql.pl > /dev/null
-/var/www/vhosts/wfido/bin/fastlink.php > /dev/null
 rm /tmp/flag_link
 
 

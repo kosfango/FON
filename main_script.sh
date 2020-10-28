@@ -81,7 +81,7 @@ done
 
 docker exec -ti fido_node mysql -u root -ppassword --socket=/var/run/mysqld/mysqld.sock -e "set global sql_mode='NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';"
 docker exec -ti fido_node sh -c 'mysql -u root -ppassword --socket=/var/run/mysqld/mysqld.sock < /root/devel/wfido/dump_install.sql'
-docker exec -ti fido_node mysql -u root -ppassword --socket=/var/run/mysqld/mysqld.sock -e "ALTER TABLE `wfido`.`messages` ADD FULLTEXT KEY `text` (`text`);"
+docker exec -ti fido_node mysql -u root -ppassword --socket=/var/run/mysqld/mysqld.sock -e 'use wfido; ALTER TABLE `messages` ADD FULLTEXT KEY `text` (`text`);'
 
 #Entering variables
 read -p 'Please enter your First Name: ' namevar
@@ -175,5 +175,6 @@ sed -i 's/# hptperlfile \/home\/username\/fido\/lib\/hptfunctions.pl/hptperlfile
 
 #Tossing script
 cp ./samples/toss.sh /opt/fido/data/lib/toss.sh
-
+cp ./samples/poll.sh /opt/fido/data/lib/poll.sh
+sed -i "s#2:9999/99#$upnodeaddrrvar#g" /opt/fido/data/lib/poll.sh
 docker restart fido_node
