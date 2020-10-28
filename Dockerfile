@@ -1,4 +1,4 @@
-FROM centos:latest
+FROM centos:7
 
 MAINTAINER Sergey Anokhin 2:5034/10.1
 
@@ -57,7 +57,10 @@ gpgcheck=1' > /etc/yum.repos.d/mariadb.repo \
     && mkdir -p /usr/local/fido/outbound \
     && mkdir -p /usr/local/fido/inbound \
     && mkdir -p /usr/local/fido/insecure \
-    && mkdir -p /usr/local/fido/tmp/in 
+    && mkdir -p /usr/local/fido/tmp/in \
+    
+    && yum groupremove "Development Tools" -y 
+    
     ###
 # End WFIDO deployment
 #########################################################################################

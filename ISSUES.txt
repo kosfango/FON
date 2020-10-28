@@ -9,3 +9,6 @@ log rotation
 optional web interface install(?)
 
 php mail() (???)
+
+docker exec -ti  fido_node sh -c /usr/local/fido/lib/toss.sh
+docker exec -ti fon_php-custom_1 php /var/www/vhosts/wfido/bin/fastlink.php

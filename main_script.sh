@@ -56,7 +56,7 @@ cp -R ./samples/nginx/* /opt/fido/etc/nginx
 cp -R ./samples/php-fpm/* /opt/fido/etc/php
 cp -R ./samples/husky/* /opt/fido/data/etc
 cp ./samples/toss.sh	/opt/fido/data/lib/toss.sh
-git clone https://github.com/kosfango/wfido.git
+git clone -b master-php7 https://github.com/kosfango/wfido.git
 cp  ./wfido/hpt/filter.pl  /opt/fido/data/lib/filter.pl
 sed -i 's/\/home\/fidonet\/var\/fidonet\/xml\/$random_string.xml/\/usr\/local\/fido\/var\/xml\/$random_string.xml/g' /opt/fido/data/lib/filter.pl
 cp -R ./wfido/htdocs/* /opt/fido/web/
@@ -71,8 +71,17 @@ do
     sleep 5
 done
 
+docker restart fon_maria-db_1
+
+while [ "$(docker exec fido_node ls /var/run/mysqld/mysqld.sock)" != /var/run/mysqld/mysqld.sock ];
+do
+    echo "Waiting MySQL socket..."
+    sleep 5
+done
+
 docker exec -ti fido_node mysql -u root -ppassword --socket=/var/run/mysqld/mysqld.sock -e "set global sql_mode='NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';"
 docker exec -ti fido_node sh -c 'mysql -u root -ppassword --socket=/var/run/mysqld/mysqld.sock < /root/devel/wfido/dump_install.sql'
+docker exec -ti fido_node mysql -u root -ppassword --socket=/var/run/mysqld/mysqld.sock -e "ALTER TABLE `wfido`.`messages` ADD FULLTEXT KEY `text` (`text`);"
 
 #Entering variables
 read -p 'Please enter your First Name: ' namevar
@@ -80,8 +89,8 @@ read -p 'Please enter your Second Name: ' surnamevar
 read -p 'Please enter your Fidonet node address (3D format): ' nodeaddrrvar
 read -p 'Please enter your station name: ' stnamevar
 read -p 'Please enter location of your station (e.g.: Kostroma, Russia): ' locvar
-read -p 'Please enter WFIDO domain name for your station: ' wfidovar
-read -sp 'Please enter password for .1 point: ' passvar
+read -p 'Please enter WFIDO domain name for your station (e.g.: wfido.net), if you dont have real domain name try to edit your hosts file: ' wfidovar
+read -sp 'Please enter password for .1 point (password for real connections via binkd): ' passvar
 echo " "
 
 #Uplink
@@ -139,9 +148,12 @@ sed -i 's/$webroot=.*/$webroot="";/g' /opt/fido/web/config.php
 sed -i 's|$mynode="2:5020/1519";|$mynode="'${nodeaddrrvar}'";|g' /opt/fido/web/config.php
 
 sed -i 's/$sql_base=.*/$sql_base="wfido";/g' /opt/fido/web/config.php
-sed -i 's/$sql_host=.*/$sql_host="\:\/var\/run\/mysqld\/mysqld\.sock";/g' /opt/fido/web/config.php
+sed -i 's/$sql_host=.*/$sql_host="\/var\/run\/mysqld\/mysqld\.sock";/g' /opt/fido/web/config.php
 sed -i 's/$sql_user=.*/$sql_user="wfido";/g' /opt/fido/web/config.php
 sed -i 's/$sql_pass=.*/$sql_pass="PASSWORD";/g' /opt/fido/web/config.php
+
+#Patch connection string
+sed -i 's/($sql_host, $sql_user, $sql_pass, $sql_base)/(NULL, $sql_user, $sql_pass, $sql_base, NULL, $sql_host)/g' /opt/fido/web/lib/lib.php
 
 #Editing perl scripts
 sed -i "s#$inbound='/home/fidonet/var/fidonet/inbound/';#$inbound='/usr/local/fido/inbound/';#" /opt/fido/data/lib/sql2pkt.pl
