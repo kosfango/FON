@@ -3,7 +3,7 @@ FROM centos:latest
 MAINTAINER Sergey Anokhin 2:5034/10.1
 
 RUN cd /tmp && rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
-    && rpm -Uvh https://rpms.famillecollet.com/enterprise/remi-release-7.rpm \
+    && rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm \
     && rpm -Uvh https://www.elrepo.org/elrepo-release-7.el7.elrepo.noarch.rpm \
     && yum upgrade -y \
     && yum groupinstall "Development Tools" -y \
