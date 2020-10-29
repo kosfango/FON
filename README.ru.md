@@ -31,5 +31,6 @@ password: PASSWORD
 - Directory /opt/fido will be created automatically
 
 ЧТО ВНУТРИ:
+
 - Husky + Binkd (1 container)
 - WFIDO on LEMP stack (3 containers)
