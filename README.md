@@ -1,8 +1,8 @@
 # FIDONET-ONECLICK
 # Experimental project for automatically deployment of FIDONET software using Docker and Docker-compose
 
-Run main_script.sh and enjoy!
-Ports usage:
+Run main_script.sh and enjoy!  
+Ports usage:  
 8080 - nginx  
 3307 - mariadb  
 24554 - binkd  
