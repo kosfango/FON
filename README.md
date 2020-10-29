@@ -7,14 +7,14 @@ Ports usage:
 3307 - mariadb  
 24554 - binkd  
 
-Edit your crontab or start this scripts manually:
+Edit your crontab or start this scripts manually:  
 docker exec -ti fido_node sh -c /usr/local/fido/lib/poll.sh  
 docker exec -ti fon_php-custom_1 php /var/www/vhosts/wfido/bin/fastlink.php
 
-Manual tosser start:
+Manual tosser start:  
 docker exec -ti fido_node sh -c /usr/local/fido/lib/toss.sh
 
-Default admin credentials for web interface WFIDO:
+Default admin credentials for web interface WFIDO:  
 login: 1  
 password: PASSWORD
 
