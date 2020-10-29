@@ -4,6 +4,7 @@
 Run main_script.sh and enjoy!  
 
 Ports usage:  
+
 8080 - nginx  
 3307 - mariadb  
 24554 - binkd  
