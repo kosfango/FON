@@ -28,9 +28,9 @@ password: PASSWORD
 - Linux
 - docker
 - docker-compose
-- Directory /opt/fido will be created automatically
+- Каталог /opt/fido будет создан автоматически!
 
 ЧТО ВНУТРИ:
 
-- Husky + Binkd (1 container)
-- WFIDO on LEMP stack (3 containers)
+- Husky + Binkd (один контейнер)
+- WFIDO on LEMP stack (три контейнера)
